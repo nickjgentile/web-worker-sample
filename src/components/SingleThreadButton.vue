@@ -6,16 +6,17 @@
 const emit = defineEmits(['clicked', 'executionComplete'])
 function onButtonClicked() {
     var startTime = performance.now()
-    emit('clicked')
-    // Simple Mainthread execution
-    var randomSingleDigit = Math.floor(Math.random() * 10);
-    // Long Mainthread execution 
-    for (var i = 0; i <= 100000; i++) {
-        console.log(i)
-    }
+    emit('clicked', () => {
+        // Simple Mainthread execution
+        var randomSingleDigit = Math.floor(Math.random() * 10);
+        // Long Mainthread execution 
+        for (var i = 0; i <= 100000; i++) {
+            console.log(i)
+        }
 
-    var endTime = performance.now()
-    emit('executionComplete', { type: 'single', randomSingleDigit, startTime, endTime })
+        var endTime = performance.now()
+        emit('executionComplete', { type: 'single', randomSingleDigit, startTime, endTime })
+    })
 }
 </script>
 

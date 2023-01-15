@@ -13,12 +13,11 @@ import MultiThreadButton from './components/MultiThreadButton.vue';
     <SingleThreadButton @clicked="this.onButtonExecutionStarted($event)"
       @executionComplete="this.onButtonExecutionComplete">
     </SingleThreadButton>
-    <MultiThreadButton @turnCheckmarkGreen="this.onTurnCheckmarkGreen()" @clicked="this.onButtonExecutionStarted()"
-      @executionComplete="this.onButtonExecutionComplete">
+    <MultiThreadButton @clicked="this.onButtonExecutionStarted($event)"
+      @turnCheckmarkGreen="this.onTurnCheckmarkGreen()" @executionComplete="this.onButtonExecutionComplete">
     </MultiThreadButton>
     <div class="spinner-container">
-      <font-awesome-icon v-show="isLoading" :size="'2x'" :spin="true" :icon="['fas', 'spinner']" />
-      <font-awesome-icon :class="{ green: isCheckGreen }" v-show="!isLoading" :size="'2x'"
+      <font-awesome-icon :class="{ red: isLoading, green: isCheckGreen }" :size="'2x'"
         :icon="['fas', 'check-circle']" />
     </div>
     <div></div>
@@ -45,9 +44,13 @@ export default {
       // and look at at start and end time of child click method
       this.isLoading = false;
     },
-    onButtonExecutionStarted() {
+    onButtonExecutionStarted($event) {
       this.isLoading = true;
       this.isCheckGreen = false;
+
+      setTimeout(() => {
+        $event();
+      }, 0)
     },
     onTurnCheckmarkGreen() {
       this.isCheckGreen = true;
@@ -63,6 +66,10 @@ export default {
   align-items: center;
   height: 100px;
   width: 100%;
+}
+
+svg.red {
+  color: #ff253a;
 }
 
 button {

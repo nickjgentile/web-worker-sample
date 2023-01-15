@@ -6,25 +6,26 @@
 const emit = defineEmits(['clicked', 'executionComplete', 'turnCheckmarkGreen'])
 function onButtonClicked(params) {
   var startTime = performance.now()
-  emit('clicked')
-  // Simple Mainthread execution
-  var randomSingleDigit = Math.floor(Math.random() * 10);
-  // Long WorkerThread execution 
-  var worker = new Worker(
-    new URL('../workers/countWorker.js', import.meta.url),
-    { type: 'module' }
-  );
+  emit('clicked', () => {
+    // Simple Mainthread execution
+    var randomSingleDigit = Math.floor(Math.random() * 10);
+    // Long WorkerThread execution 
+    var worker = new Worker(
+      new URL('../workers/countWorker.js', import.meta.url),
+      { type: 'module' }
+    );
 
-  worker.onmessage = function (data) {
-    console.log('Turn the button green to indicate the worker has finished!')
-    emit('turnCheckmarkGreen')
-    worker.terminate();
-  }
+    worker.onmessage = function (data) {
+      console.log('Turn the button green to indicate the worker has finished!')
+      emit('turnCheckmarkGreen')
+      worker.terminate();
+    }
 
-  worker.postMessage({ type: 'countToOneHundredThousand' });
+    worker.postMessage({ type: 'countToOneHundredThousand' });
 
-  var endTime = performance.now()
-  emit('executionComplete', { type: 'multi', randomSingleDigit, startTime, endTime })
+    var endTime = performance.now()
+    emit('executionComplete', { type: 'multi', randomSingleDigit, startTime, endTime })
+  })
 }
 </script>
 
