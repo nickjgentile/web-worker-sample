@@ -20,6 +20,9 @@ import MultiThreadButton from './components/MultiThreadButton.vue';
       <font-awesome-icon :class="{ red: isLoading, green: isCheckGreen }" :size="'2x'"
         :icon="['fas', 'check-circle']" />
     </div>
+    <span>Grey checkCircle = No mainthread execution happening.</span>
+    <span style="color: red">Red checkCircle = Mainthread execution is taking place.</span>
+    <span class="green">Green checkCircle = Worker thread has communicated back to the main thread.</span>
     <div></div>
   </main>
 </template>
@@ -65,11 +68,15 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100px;
-  width: 100%;
+  width: 200px;
 }
 
 svg.red {
   color: #ff253a;
+}
+
+span {
+  display: block;
 }
 
 button {
